@@ -1,4 +1,4 @@
-/*const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const {connectionUrl} = require("../config/keys");
 
 const connectMongodb = async () => {
@@ -11,9 +11,9 @@ const connectMongodb = async () => {
     }
 };
 
-module.exports = connectMongodb */
+module.exports = connectMongodb 
 
-const mongoose = require("mongoose");
+/*const mongoose = require("mongoose");
 const { connectionUrl } = require("../config/keys");
 
 const connectMongodb = async () => {
@@ -47,4 +47,4 @@ const connectMongodb = async () => {
     });
 };
 
-module.exports = connectMongodb;
+module.exports = connectMongodb*/
