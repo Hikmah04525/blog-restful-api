@@ -5,6 +5,8 @@ const signup = async(req, res, next) => {
         const newUser = new User({name, email, password});
         await newUser.save();
         res.status(201).json({
+            code: 201, 
+            status: true, 
             message: "User registered successfully",
             user: {
                 id: newUser._id,
@@ -15,6 +17,7 @@ const signup = async(req, res, next) => {
     }catch(error){
         next(error);
     }
+    
 };
 
-module.exports = { signup };
+module.exports = { signup }; 
