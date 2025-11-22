@@ -1,4 +1,5 @@
-const {User} = require("../models");
+const {User} = require("../models/User");
+const hashPassword = require("../utils/hashPassword");
 const signup = async(req, res, next) => {
     try{
         const {name, email, password} = req.body;
@@ -8,7 +9,9 @@ const signup = async(req, res, next) => {
             res.code=400;
             throw new Error("Email already exists");
         }
-        const newUser = new User({name, email, password});
+
+        const hashedPassword = await hashPassword(password);
+        const newUser = new User({name, email, password: hashedPassword});
         await newUser.save();
         res.status(201).json({
             code: 201, 
@@ -27,3 +30,4 @@ const signup = async(req, res, next) => {
 };
 
 module.exports = { signup }; 
+
