@@ -1,33 +1,96 @@
-const {User} = require("../models/User");
+/* const {User} = require("../models/User");
 const hashPassword = require("../utils/hashPassword");
-const signup = async(req, res, next) => {
-    try{
-        const {name, email, password} = req.body;
+const comparePassword = require("../utils/comparePassword")
 
-        const isEmailExist = await User.findOne({email});
-        if (isEmailExist){
-            res.code=400;
-            throw new Error("Email already exists");
+const signup = async(req, res, next) => {
+    
+
+
+}
+
+const signin= async (req, res, next)=>{
+    try {
+        const {email, password} = req.body;
+        const user = await User.findOne({email});
+        if(!user){
+            res.code = 401;
+            throw new Error ("invalid credentials")
+        }
+        const match = await comparePassword (password, user.password);
+        if(!match)
+            res.code = 401;
+        throw new Error ("invalid credentials")
+
+        res.status(200).json ({code: 200, status: true. message: "user signin seccessful"})
+    } catch (error) {
+        
+    }
+}
+
+module.exports = { signup, signin }; */
+
+const { User } = require("../models/User");
+const hashPassword = require("../utils/hashPassword");
+const comparePassword = require("../utils/comparePassword")
+
+const signup = async (req, res, next) => {
+    try {
+        const { name, email, password } = req.body;
+
+        // check if user exists
+        const exist = await User.findOne({ email });
+        if (exist) {
+            res.code = 400;
+            throw new Error("User already exists");
         }
 
-        const hashedPassword = await hashPassword(password);
-        const newUser = new User({name, email, password: hashedPassword});
-        await newUser.save();
-        res.status(201).json({
-            code: 201, 
-            status: true, 
-            message: "User registered successfully",
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email
-            }
+        // hash password
+        const hashed = await hashPassword(password);
+
+        // create user
+        const user = await User.create({
+            fullName: name,
+            email,
+            password: hashed
         });
-    }catch(error){
+
+        res.status(201).json({
+            code: 201,
+            status: true,
+            message: "user signup successful",
+            user
+        });
+
+    } catch (error) {
         next(error);
     }
-    
 };
 
-module.exports = { signup }; 
+const signin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
 
+        const user = await User.findOne({ email });
+        if (!user) {
+            res.code = 401;
+            throw new Error("invalid credentials");
+        }
+
+        const match = await comparePassword(password, user.password);
+        if (!match) {
+            res.code = 401;
+            throw new Error("invalid credentials");
+        }
+
+        res.status(200).json({
+            code: 200,
+            status: true,
+            message: "user signin successful"
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { signup, signin };
