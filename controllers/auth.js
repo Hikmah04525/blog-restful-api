@@ -32,6 +32,7 @@ module.exports = { signup, signin }; */
 const { User } = require("../models/User");
 const hashPassword = require("../utils/hashPassword");
 const comparePassword = require("../utils/comparePassword")
+const generateToken = require("../utils/generateToken");
 
 const signup = async (req, res, next) => {
     try {
@@ -82,10 +83,12 @@ const signin = async (req, res, next) => {
             throw new Error("invalid credentials");
         }
 
+        const token = generateToken(user);
         res.status(200).json({
             code: 200,
             status: true,
-            message: "user signin successful"
+            message: "user signin successful",
+            data:{token}
         });
 
     } catch (error) {
