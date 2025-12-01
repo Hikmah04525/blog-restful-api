@@ -108,9 +108,13 @@ const sendEmail = require("../utils/sendEmail");
 // =============================
 // SIGNUP
 // =============================
+// Handles creating a new user, hashing password,
+// generating verification token, and sending email.
 const signup = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
+
+        // check if the email is already used
 
         const exists = await User.findOne({ email });
         if (exists) {
@@ -118,10 +122,14 @@ const signup = async (req, res, next) => {
             throw new Error("Email already exists");
         }
 
+        // hash the user password
+
         const hashedPassword = await hashPassword(password);
 
         // generate email verification token
         const token = crypto.randomBytes(32).toString("hex");
+
+        // create new user in DB
 
         const newUser = await User.create({
             name,
@@ -162,6 +170,8 @@ const verifyEmail = async (req, res, next) => {
     try {
         const { token } = req.params;
 
+        // find user with valid verification token
+
         const user = await User.findOne({
             verificationToken: token,
             verificationTokenExpires: { $gt: Date.now() }
@@ -171,6 +181,8 @@ const verifyEmail = async (req, res, next) => {
             res.code = 400;
             throw new Error("Invalid or expired verification token");
         }
+
+        // update user to verified
 
         user.isVerified = true;
         user.verificationToken = undefined;
@@ -202,11 +214,15 @@ const signin = async (req, res, next) => {
             throw new Error("invalid credentials");
         }
 
+        // compare password
+
         const match = await comparePassword(password, user.password);
         if (!match) {
             res.code = 401;
             throw new Error("invalid credentials");
         }
+
+        // generate JWT token
 
         const token = generateToken(user);
 
