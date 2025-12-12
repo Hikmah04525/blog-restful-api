@@ -9,7 +9,6 @@ This repository contains a robust and structured **RESTful API** designed for a 
 - **Email Verification:** Implements a user email verification flow.
 - **Password Security:** Securely hashes passwords using `bcrypt`.
 - **Validation:** Comprehensive input validation for user routes (signup/signin).
-- **Modular Structure:** Clear separation of concerns into controllers, models, routes, and middlewares.
 
 ## Technology Stack
 * Node.js / Express (Inferred)
