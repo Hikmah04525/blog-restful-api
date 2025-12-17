@@ -11,7 +11,7 @@ This repository contains a robust and structured **RESTful API** designed for a 
 - **Validation:** Comprehensive input validation for user routes (signup/signin).
 
 ## Technology Stack
-* Node.js / Express (Inferred)
+* Node.js / Express 
 * MongoDB
 * `bcrypt` (for password hashing)
 * Token-based authentication
