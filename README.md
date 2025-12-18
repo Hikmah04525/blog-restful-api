@@ -8,7 +8,7 @@ This repository contains a robust and structured **RESTful API** designed for a 
 - **Secure Access:** Utilizes tokens (e.g., JWT) for session management and authorization.
 - **Email Verification:** Implements a user email verification flow.
 - **Password Security:** Securely hashes passwords using `bcrypt`.
-- **Validation:** Comprehensive input validation for user routes (signup/signin).
+- **Validation:** Comprehensive input validation for user routes (signup).
 
 ## Technology Stack
 * Node.js / Express 
